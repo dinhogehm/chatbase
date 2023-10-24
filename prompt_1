@@ -1,0 +1,36 @@
+let data = $input.item.json.data[0];
+let summary = data.pipeline_summary;
+let dados = {data:""};
+
+dados.data += "Gere insights para melhorar a performance de fechamentos (ganhos) desta operação:\n";
+dados.data += "Movimentações no período - " + data.pipeline_name + "\n";
+dados.data += "Oportunidades ganhas Oportunidades perdidas\n";
+dados.data += "Etapas   Entrada Saída Taxa  Lead time Quantidade  Lead time Quantidade  Lead time\n";
+    
+data.data.map(item => {
+  dados.data += "" + item.name + "  \n";
+  dados.data += "" + item.entries + 1;
+  dados.data += "  " + item.outs - 1;
+  dados.data += " " + (((item.outs - 1) / (item.entries + 1))*100).toFixed(2) + "%  ";
+  dados.data += item.lead_time + " dias ";
+  dados.data += item.won_deals + "  ";
+  dados.data += item.won_deals_lead_time + " dias ";
+  dados.data += item.lost_deals + " ";
+  dados.data += item.lost_deals_lead_time + " dias  \n";
+});
+
+dados.data += "RESUMO DO FUNIL: Novas oportunidades:  " + (summary.new_deals + 1);
+dados.data += " • Taxa de ganhas: " + ((summary.won_deals / summary.new_deals)*100).toFixed(2) + "% ";
+dados.data += "Ganhas:  " + summary.won_deals;
+dados.data += " • " + (summary.won_deals/(summary.won_deals+summary.lost_deals)*100).toFixed(2) +"% ";
+dados.data += "•  P&S:  \nR$ " + summary.won_deals_value;
+dados.data += " • MRR:  R$ " + summary.won_deals_value_mrr;
+dados.data += "\nPerdidas:  " + (summary.lost_deals-1);
+dados.data += " • " + (summary.lost_deals/(summary.won_deals+summary.lost_deals)*100).toFixed(2) + "% ";
+dados.data += "•  P&S:  R$ " + summary.lost_deals_value;
+dados.data += " • MRR:  R$ " + summary.lost_deals_value_mrr + "\n";
+
+return {json:dados};
+
+
+osvaldo@crmpiperun.com, cezar@crmpiperun.com, fausto@crmpiperun.com
